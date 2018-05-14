@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Entities.Product>
+
+
+@{
+    ViewBag.Title = "Index";
+    
+}
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Information)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Manufacture)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Information)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manufacture)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.ActionLink("Ændre", "Edit", new
+                {
+                    id = item.Id,
+                    productName = item.ProductName,
+                    Price = item.Price,
+                    Information = item.Information,
+                    Manufacture = item.Manufacture,
+                    Category = item.Category,
+                    CategoryId = item.CategoryId
+                }) |
+                @Html.ActionLink("Detailjer", "Details", new
+                {
+                    id = item.Id,
+                    productName = item.ProductName,
+                    Price = item.Price,
+                    Information = item.Information,
+                    Manufacture = item.Manufacture,
+                    Category = item.Category,
+                    CategoryId = item.CategoryId
+                }) |
+                @Ajax.ActionLink("Delete", "Delete", new { id = item.Id },
+                    new AjaxOptions()
+                    {
+                        HttpMethod = "Post",
+                        Confirm = "Er du sikker?",
+                        OnSuccess = "window.location.reload()"
+                    })
+            </td>
+        </tr>
+    }
+
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+

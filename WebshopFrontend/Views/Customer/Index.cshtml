@@ -1,0 +1,7 @@
+﻿@model IEnumerable<Entities.Customer>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<div>@Html.Partial("CustomerListPartial", Model)</div>

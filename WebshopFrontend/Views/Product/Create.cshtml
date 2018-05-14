@@ -1,0 +1,128 @@
+﻿@model WebshopFrontend.Models.ProductCategory
+
+@{
+
+    ViewBag.Title = "Create";
+}
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Product</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.product.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.product.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.product.ProductName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.product.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.product.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.product.Price, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.product.Information, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.product.Information, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.product.Information, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.product.Manufacture, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.product.Manufacture, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.product.Manufacture, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.category.CategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <b>
+
+                @Html.DropDownListFor(model => model.category.Id, (SelectList)ViewBag.categoryList, "Vælg en kategori", new { @class = "form-control" })
+            </b>
+            @Html.ValidationMessageFor(model => model.category.CategoryName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.category.Id)
+    @Html.HiddenFor(model => model.product.CategoryId)
+    <input type="button" value="Ny kategori" class="btn btn-outline-success" id="myBtn" style="margin-bottom:5%; margin-left:1%" />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Opret" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <input type="text" name="CategoryName" placeholder="Skriv en kategori her!..." style="margin-bottom:5%" id="inputBoxForCategory"/>
+        <input type="button" value="Opret kategori" class="btn btn-outline-success" id="categoryAddBtn" />
+    </div>
+</div>
+
+<div style="margin-left:2%">
+    @Html.ActionLink("Tilbage", "Index")
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    $(document).ready(function () {
+        $('#categoryAddBtn').click(function () {
+            var input = $("#inputBoxForCategory").val();
+            $.ajax({
+                type: "POST",
+                url: "/Product/PostCategory",
+                data: { 'html' : input },
+                success: function (data) {
+                    $("#categoryAddBtn").modal('hide');
+                    location.reload();
+                }
+            });
+        });
+    });
+</script>
